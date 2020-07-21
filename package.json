@@ -16,6 +16,7 @@
     "package": "npm run lint; npm run babel",
     "start": "npm run lint; npm run build; ENV=development node dist/src/app.js",
     "startForWindows": "npm run lint && npm run build && set ENV=development node dist/src/app.js",
+    "startInWindows":"npm run lint && node src/app.js",
     "startWithoutLint": "npm run babelWithSourceMap  && node -r source-map-support dist/app.js",
     "babelWithSourceMapForWindows": "node ./node_modules/@babel/cli/bin/babel.js src --out-dir  dist --source-maps inline ",
     "dbMigrateLatest": "ENV=development knex migrate:latest",
@@ -49,11 +50,14 @@
     "jest": "^26.0.1",
     "knex": "^0.20.15",
     "mailgun-js": "^0.22.0",
+    "mime": "^2.4.6",
     "node-fetch": "^2.6.0",
+    "nodemon": "^2.0.4",
     "pg": "^8.2.1",
     "postgres": "^1.0.2",
     "redis": "^3.0.2",
-    "regenerator-runtime": "^0.13.3"
+    "regenerator-runtime": "^0.13.3",
+    "ws": "^7.3.1"
   },
   "devDependencies": {
     "@types/cookie-parser": "^1.4.2",
