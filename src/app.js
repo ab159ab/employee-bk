@@ -1,5 +1,5 @@
 const fs = require('fs');
-const { json } = require('body-parser');
+// const { json } = require('body-parser');
 const WebSocket = require('ws').Server;
 const mime = require('mime');
 
@@ -14,16 +14,24 @@ let minutes = currentDate.getMinutes();
 let seconds = currentDate.getSeconds();
 let timeStamp = currentDate.getTime();
 // console.log(`${year}-${month}-${day}-${hours}${minutes}-${seconds}-${timeStamp}`);
-let number
+// let number = 10;
 const ImgaesDir = `./images/${year}/${month}/${day}`;
 wss.on('connection', function connection(ws) {
-
-number =  ws.on('message', function (message) {
+let number;
+ws.on('message', function (message) {
     const data = JSON.parse(message);
      console.log(data.name);
     
-let numbr = checkUser('data.name');
-  
+let numbr = checkUser(data.name);
+console.log(numbr);
+// timeStamp = 100000;
+// console.log(timeStamp);
+if(numbr === 1){
+  ws.send("2000")
+}
+else{
+  ws.send("404")
+}
 // let imageBuffer = new Buffer(data.image, "base64");
 let fileName = `${year}-${month}-${day}-${hours}${minutes}-${seconds}-${timeStamp}`;
 try {
@@ -32,14 +40,7 @@ try {
 } catch (e) {
 console.log(e);
 }
-return numbr;
   });
-  if(number === 1){
-    ws.send('2000')
-  }
-  else{
-    ws.send('User Not Found')
-  }
 });
 
 function checkUser(name){
@@ -53,4 +54,4 @@ function checkUser(name){
 }
 // let chk = checkUser('Ali')
 //  console.log(chk);
-console.log(number);
+// console.log(timeStamp)
