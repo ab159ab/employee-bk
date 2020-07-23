@@ -116,3 +116,5 @@ package-lock.json
 *.swo
 *.swp
 
+# images directory
+images
