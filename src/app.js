@@ -15,7 +15,7 @@ wss.on("connection", (ws) => {
     console.log(numbr);
     if (numbr === 1) {
       ws.send("8000");
-      if(data.image !== "image"){
+      if (data.image !== "image") {
         const images = Buffer.from(data.image, "base64");
         const timedNames = getTimedNames.getTimedName(data.name);
         const p = path.join(__dirname, timedNames[1]);
@@ -23,9 +23,8 @@ wss.on("connection", (ws) => {
         // fs.writeFileSync(p, images, "utf8");
         fs.mkdir(timedNames[0], { recursive: true }, (err) => {
           if (err) throw err;
-          fs.writeFile(p, images, (err) => {
-            if (err) throw err;
-            console.log('File saved!');
+          fs.writeFile(p, images, () => {
+            console.log("File saved!");
           });
         });
       }
