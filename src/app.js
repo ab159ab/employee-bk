@@ -1,6 +1,7 @@
 const WebSocket = require("ws").Server;
 const opn = require("opn");
 const path = require("path");
+const getTimedNames = require("./components/date");
 const check = require("./components/checkUser");
 const saveImg = require("./components/saveImage");
 
