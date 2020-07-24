@@ -5,7 +5,7 @@ const logTime = {
   logInDate: null,
   logOutState: null,
   logoutDate: null,
-  sessionTime:null,
+  sessionTime: null,
 };
 function logInTime(Date) {
   logTime.loginState = "Logged In";
@@ -15,14 +15,17 @@ function logInTime(Date) {
 function logOutTime(Date, userName) {
   const logObj = timeArray[0];
   logObj.username = userName;
-  logObj.logOutState = "Logged Out"
+  logObj.logOutState = "Logged Out";
   logObj.logoutDate = Date;
 
-  //calculate session time
+  // calculate session time
   console.log(logObj);
   // Save this object to postgre database
 }
 
+// const userLogs = require("./components/userLogs");
+// userLogs.logInTime(new Date());
+// userLogs.logOutTime(new Date(), userName);
 module.exports = {
   logInTime,
   logOutTime,

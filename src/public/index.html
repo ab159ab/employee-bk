@@ -18,9 +18,6 @@
 <script>
     let base64 = "data:image/png;base64,";
     let imageNumber =0;
-    document.addEventListener('DOMContentLoaded', function (event) {
-        console.log('DOM fully loaded and parsed');
-
         const socket = new WebSocket("ws://localhost:9000");
         socket.onopen = () => { console.log("hello there") }
         socket.onmessage = function (event) {
@@ -35,8 +32,9 @@
         socket.onclose = () => {
             console.log("[Client]: Connection closed")
         }
-        
-    });
+        window.addEventListener('beforeunload', function() {
+            socket.close();
+        });
 
 
 </script>
