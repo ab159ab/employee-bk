@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2>Realtime Screenshots</h2>
+    <div>      
+        <img id="imageSrc" src="" alt="">
+    </div>
+</body>
+</html>  
+<script>
+        let base64 = "data:image/png;base64,";
+    const socket = new WebSocket("ws://localhost:9000");
+    socket.onopen = ()=>{ console.log("hello there")}
+    socket.onmessage=function (event) {
+        console.log(event.data);
+        let base64Url = null;
+        base64Url = base64 + event.data;
+        document.getElementById("imageSrc").src = base64Url;
+    };
+       
+</script>
