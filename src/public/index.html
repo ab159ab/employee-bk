@@ -20,8 +20,7 @@
         console.log(event.data);
         let base64Url = null;
         base64Url = base64 + event.data;
-        let image = document.getElementById("imageSrc");
-        image.src = base64Url;
+        document.getElementById("imageSrc").src= base64Url;
     };
        
 </script>
