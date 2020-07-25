@@ -13,8 +13,9 @@ function saveImage(image, name) {
         console.log("File saved!");
       });
     });
-  } else {
-    console.log("Image Not Received");
+    return timedNames[2];
   }
+  console.log("Image Not Received");
+  return null;
 }
 module.exports.saveImage = saveImage;

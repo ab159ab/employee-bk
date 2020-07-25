@@ -5,36 +5,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="./index.css"/>  
 </head>
 
 <body>
-    <h2>Realtime Screenshots</h2>
-    <div>
+    <div id="all-users">
+        <h2 id="username"></h2>
+        <h4 id="date"></h4>
         <img id="imageSrc" src="" alt="">
     </div>
 </body>
 
 </html>
-<script>
-    let base64 = "data:image/png;base64,";
-    let imageNumber =0;
-        const socket = new WebSocket("ws://localhost:9000");
-        socket.onopen = () => { console.log("hello there") }
-        socket.onmessage = function (event) {
-            let obj = JSON.parse(event.data);
-            console.log(`Recieved Data form server: ${obj.date}`);
-            let base64Url = null;
-            base64Url = base64 + obj.image;
-            document.getElementById("imageSrc").src = base64Url;
-            imageNumber +=1
-            console.log(`Image #  ${imageNumber} with date: ${obj.date}`);
-        };
-        socket.onclose = () => {
-            console.log("[Client]: Connection closed")
-        }
-        window.addEventListener('beforeunload', function() {
-            socket.close();
-        });
-
-
-</script>
+<script src="./index.js"></script>

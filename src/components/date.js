@@ -10,6 +10,6 @@ function getTimedName(name) {
   const imgaesDir = `images/${name}/${year}/${month}/${day}/`;
   const fileName = `${name}-${year}-${month}-${day}-${hours}${minutes}-${seconds}-${timeStamp}.png`;
   const imgPath = `../../images/${name}/${year}/${month}/${day}/${fileName}`;
-  return [imgaesDir, imgPath];
+  return [imgaesDir, imgPath, fileName];
 }
 module.exports.getTimedName = getTimedName;
