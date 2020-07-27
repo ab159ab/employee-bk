@@ -7,11 +7,13 @@ const logTime = {
   logoutDate: null,
   sessionTime: null,
 };
+
 function logInTime(Date) {
   logTime.loginState = "Logged In";
   logTime.logInDate = Date;
   timeArray.push(logTime);
 }
+
 function logOutTime(Date, userName) {
   const logObj = timeArray[0];
   logObj.username = userName;
@@ -22,10 +24,6 @@ function logOutTime(Date, userName) {
   console.log(logObj);
   // Save this object to postgre database
 }
-
-// const userLogs = require("./components/userLogs");
-// userLogs.logInTime(new Date());
-// userLogs.logOutTime(new Date(), userName);
 module.exports = {
   logInTime,
   logOutTime,

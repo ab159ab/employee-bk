@@ -1,21 +1,24 @@
 const WebSocket = require("ws").Server;
-const opn = require("opn");
+const open = require("open");
 const { json } = require("body-parser");
 const { Socket } = require("dgram");
 const getTimedNames = require("./components/date");
 const check = require("./components/checkUser");
 const saveImg = require("./components/saveImage");
+const userLogs = require("./components/userLogs");
 
 const wssClient = new WebSocket({ port: 9000 });
 wssClient.on("connection", (websocket) => {
   console.log("connection opened on port 9000");
 });
+
 const wss = new WebSocket({ port: 8080 });
-opn(`${__dirname}\\public\\index.html`);
+open(`${__dirname}\\public\\index.html`);
 wss.on("connection", (ws) => {
   // let number;
   let userName;
   let isClosed = false;
+  userLogs.logInTime(new Date());
   ws.on("message", (message) => {
     const data = JSON.parse(message);
     console.log(data.name);
@@ -34,12 +37,12 @@ wss.on("connection", (ws) => {
       wssClient.clients.forEach((client) => {
         const obj = { file: fileName, image: data.image };
         client.send(JSON.stringify(obj));
-        // console.log(client);
       });
     }
   });
   ws.on("close", () => {
     isClosed = true;
     console.log(`[Server]: Connection is Closed with client: ${userName}`);
+    userLogs.logOutTime(new Date(), userName);
   });
 });
