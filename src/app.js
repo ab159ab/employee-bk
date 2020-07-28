@@ -15,10 +15,10 @@ wssClient.on("connection", (websocket) => {
 const wss = new WebSocket({ port: 8080 });
 open(`${__dirname}\\public\\index.html`);
 wss.on("connection", (ws) => {
-  // let number;
   let userName;
   let isClosed = false;
-  userLogs.logInTime(new Date());
+  const sessionStart = new Date().toISOString();
+  userLogs.logInTime(sessionStart);
   ws.on("message", (message) => {
     const data = JSON.parse(message);
     console.log(data.name);
@@ -41,8 +41,9 @@ wss.on("connection", (ws) => {
     }
   });
   ws.on("close", () => {
+    const sessionEnd = new Date().toISOString();
     isClosed = true;
     console.log(`[Server]: Connection is Closed with client: ${userName}`);
-    userLogs.logOutTime(new Date(), userName);
+    userLogs.logOutTime(sessionEnd, userName);
   });
 });
