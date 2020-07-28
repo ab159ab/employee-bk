@@ -55,7 +55,7 @@
     "node-fetch": "^2.6.0",
     "nodemon": "^2.0.4",
     "open": "^7.1.0",
-    "pg": "^8.2.1",
+    "pg": "^8.3.0",
     "postgres": "^1.0.2",
     "redis": "^3.0.2",
     "regenerator-runtime": "^0.13.3",
