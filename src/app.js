@@ -7,24 +7,29 @@ const check = require("./components/checkUser");
 const saveImg = require("./components/saveImage");
 const userLogs = require("./components/userLogs");
 
-const wssClient = new WebSocket({ port: 9000 });
+const config = require("../configs/config");
+
+const wssClient = new WebSocket({ port: config.browserClientPort });
 wssClient.on("connection", (websocket) => {
   console.log("connection opened on port 9000");
 });
 
-const wss = new WebSocket({ port: 8080 });
+const wss = new WebSocket({ port: config.javaClientPort });
 open(`${__dirname}\\public\\index.html`);
 wss.on("connection", (ws) => {
   let userName;
   let isClosed = false;
+
   const sessionStart = new Date().toISOString();
   userLogs.logInTime(sessionStart);
+
   ws.on("message", (message) => {
     const data = JSON.parse(message);
     console.log(data.name);
     userName = data.name;
     const numbr = check.checkUser(data.name);
     console.log(numbr);
+
     if (numbr === 1) {
       setTimeout(() => {
         ws.send("Send Images");
@@ -32,6 +37,7 @@ wss.on("connection", (ws) => {
     } else {
       ws.send("404");
     }
+
     if (data.image !== "image") {
       const fileName = saveImg.saveImage(data.image, data.name);
       wssClient.clients.forEach((client) => {
@@ -40,6 +46,7 @@ wss.on("connection", (ws) => {
       });
     }
   });
+
   ws.on("close", () => {
     const sessionEnd = new Date().toISOString();
     isClosed = true;
