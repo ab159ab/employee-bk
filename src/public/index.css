@@ -4,13 +4,11 @@ body{
 #all-users{
     display: none;
 }
-/* div{
-    position: relative; 
-    width: 100%;
-} */
+
 h2 {
     text-align: center;
     color: darkslategrey;
+    /* for overlays */
     /* position: absolute; 
     top: 50px; 
     left: 0; 
@@ -19,7 +17,9 @@ h2 {
 h4{
     text-align: center;
     color: darkslategrey;
-    /* position: absolute; 
+    /* for overlays */
+    /*  
+    position: absolute; 
     top: 80px; 
     left: 0; 
     width: 100%;  */
@@ -27,3 +27,9 @@ h4{
 img{
     border: 6px solid gray;
 }
+
+/* for overlays */
+/* div{
+    position: relative; 
+    width: 100%;
+} */

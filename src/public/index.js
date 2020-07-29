@@ -6,9 +6,7 @@ function createDiv(name, image, date) {
   const clone = div.cloneNode(true); // true means clone all childNodes and all event handlers
   clone.id = `${name}-users`;
   document.body.appendChild(clone);
-  console.log(clone.id);
   const username = document.querySelector(`#${clone.id} #username`);
-  console.log(username);
   username.setAttribute("id", name);
   username.textContent = `User name: ${name}`;
   const imagedate = document.querySelector(`#${clone.id} #date`);
@@ -19,6 +17,7 @@ function createDiv(name, image, date) {
   img.src = base64 + image;
   clone.style.display = "block";
 }
+
 function checkDiv(name, image, date) {
   const e = document.getElementById(`${name}-users`);
   if (e) {
@@ -29,6 +28,7 @@ function checkDiv(name, image, date) {
     createDiv(name, image, date);
   }
 }
+
 socket.onopen = () => { console.log("hello there"); };
 socket.onmessage = function (event) {
   const obj = JSON.parse(event.data);
@@ -38,9 +38,11 @@ socket.onmessage = function (event) {
   console.log(`Recieved Data form server: ${obj.file}`);
   checkDiv(username, obj.image, date);
 };
+
 socket.onclose = () => {
   console.log("[Client]: Connection closed");
 };
+
 window.addEventListener("beforeunload", () => {
   socket.close();
 });
