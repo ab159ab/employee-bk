@@ -6,21 +6,25 @@ const getTimedNames = require("./components/date");
 const checkUser = require("./components/checkUser");
 const saveImage = require("./components/saveImage");
 const userLogs = require("./components/userLogs");
-const development = require("../configs/config");
+const config = require("../configs/config");
 
-let time = 10;
-const wssClient = new WebSocket({ port: development.socket2Port });
+let  inactivityTime  = config.inactivityTime;
+let screenShotInterval = config.screenShotIntervalSeconds;
+const wssClient = new WebSocket({ port: config.browserClientPort });
 wssClient.on("connection", (websocket) => {
   websocket.on("message", (message) => {
     const data = JSON.parse(message);
-    if (data.name === "time") {
-      time = data.time;
+    if (data.name === "InacivtiyTime") {
+      inactivityTime = data.time;
+    }
+    if (data.name === "ScreenshotTime") {
+      screenShotInterval = (data.time) * 1000;
     }
   });
   console.log("connection opened on port 9000");
 });
 
-const wss = new WebSocket({ port: development.socket1Port });
+const wss = new WebSocket({ port: config.javaClientPort });
 
 wss.on("connection", (ws) => {
   let userName;
@@ -34,12 +38,12 @@ wss.on("connection", (ws) => {
     const isPresent = checkUser(data.name);
     if (isPresent === true) {
       const messageObject = {
-        internalTime: time,
+        internalTime: inactivityTime,
         imageStatus: "send",
       };
       setTimeout(() => {
         ws.send(JSON.stringify(messageObject));
-      }, development.timeout);
+      }, screenShotInterval);
     } else {
       ws.send("404");
     }

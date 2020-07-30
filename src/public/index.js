@@ -39,9 +39,16 @@ socket.onmessage = function (event) {
   checkDiv(username, obj.image, date);
 };
 
-function getValue() {
-  const time = document.getElementById("text").value;
-  const internalTime = { name: "time", time };
+function getScreenshotInterval() {
+  const time = document.getElementById("Screenshots").value;
+  const internalTime = { name: "ScreenshotTime", time };
+  socket.send(JSON.stringify(internalTime));
+  alert(time);
+}
+
+function getInactivityInterval() {
+  const time = document.getElementById("Inactivity").value;
+  const internalTime = { name: "InacivtiyTime", time };
   socket.send(JSON.stringify(internalTime));
   alert(time);
 }

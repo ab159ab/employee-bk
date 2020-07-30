@@ -1,7 +1,14 @@
-const development = {
-    socket1Port: 8080,
-    socket2Port: 9000,
-    timeout: 5000,
+module.exports = {
+    javaClientPort:  8080,
+    browserClientPort: 9000,
+    screenShotIntervalSeconds: 5000,
+    inactivityTime: 15,
+    db: {
+        client:  "pg",
+        host:  "127.0.0.1",
+        user: "postgres",
+        password: "cq123",
+        database:  "employee",
+        port:  5432,
+      },
 }
-
-module.exports = development;
