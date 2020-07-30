@@ -39,6 +39,13 @@ socket.onmessage = function (event) {
   checkDiv(username, obj.image, date);
 };
 
+function getValue() {
+  const time = document.getElementById("text").value;
+  const internalTime = { name: "time", time };
+  socket.send(JSON.stringify(internalTime));
+  alert(time);
+}
+
 socket.onclose = () => {
   console.log("[Client]: Connection closed");
 };
