@@ -25,10 +25,10 @@ wssClient.on("connection", (websocket) => {
 });
 
 const wss = new WebSocket({ port: config.javaClientPort });
-
 wss.on("connection", (ws) => {
   let userName;
   let isClosed = false;
+
   const sessionStart = new Date().toISOString();
   userLogs.logInTime(sessionStart);
   open(`${__dirname}\\public\\index.html`);
@@ -47,6 +47,7 @@ wss.on("connection", (ws) => {
     } else {
       ws.send("404");
     }
+
     if (data.image !== "image") {
       const fileName = saveImage(data.image, data.name);
       wssClient.clients.forEach((client) => {
@@ -55,6 +56,7 @@ wss.on("connection", (ws) => {
       });
     }
   });
+
   ws.on("close", () => {
     const sessionEnd = new Date().toISOString();
     isClosed = true;

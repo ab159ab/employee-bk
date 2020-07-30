@@ -1,14 +1,16 @@
 const development = {
   host: () => "127.0.0.1",
-  port: () => "4321",
+  javaClientPort: () => "8080",
+  browserClientPort: () => "9000",
   fullUrl: () => "http://api.site.com",
   allowedOrigins: () => ["http://site.com", "http://test.site.com"],
   db: {
     client: () => "pg",
     host: () => "127.0.0.1",
-    user: () => "app",
-    password: () => "app",
-    database: () => "app",
+    user: () => "postgres",
+    password: () => "cq123",
+    database: () => "employee",
+    port:     ()=> 5432,
   },
   fe: {
     cookieDomain: () => ".site.com",
@@ -21,15 +23,17 @@ const development = {
 type EnvConfig = typeof development;
 const testing: EnvConfig = {
   host: () => "127.0.0.1",
-  port: () => "4322",
+  javaClientPort: () => "8080",
+  browserClientPort: () => "9000",
   fullUrl: () => "http://testapi.site.com",
   allowedOrigins: () => ["http://site.com", "http://testapi.site.com"],
   db: {
     client: () => "pg",
     host: () => "127.0.0.1",
-    user: () => "app",
-    password: () => "app",
-    database: () => "app",
+    user: () => "postgres",
+    password: () => "cq123",
+    database: () => "employee",
+    port:     ()=> 5432,
   },
   fe: {
     cookieDomain: () => ".site.com",
