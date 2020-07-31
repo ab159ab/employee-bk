@@ -1,41 +1,51 @@
 const WebSocket = require("ws").Server;
 const open = require("open");
-const { json } = require("body-parser");
-const { Socket } = require("dgram");
-const getTimedNames = require("./components/date");
 const checkUser = require("./components/checkUser");
 const saveImage = require("./components/saveImage");
 const userLogs = require("./components/userLogs");
 const config = require("../configs/config");
 
+const { milliSeconds } = config;
 let { inactivityTime } = config;
-let screenShotInterval = config.screenShotIntervalSeconds;
+let newTime = config.inactivityTime;
+let screenShotInterval = (config.screenShotIntervalSeconds) * milliSeconds;
 const wssClient = new WebSocket({ port: config.browserClientPort });
 wssClient.on("connection", (websocket) => {
   websocket.on("message", (message) => {
     const data = JSON.parse(message);
     if (data.name === "InacivtiyTime") {
-      inactivityTime = data.time;
+      newTime = data.time;
     }
     if (data.name === "ScreenshotTime") {
-      screenShotInterval = (data.time) * 1000;
+      screenShotInterval = (data.time) * milliSeconds;
     }
   });
   console.log("connection opened on port 9000");
 });
 
 const wss = new WebSocket({ port: config.javaClientPort });
-
 wss.on("connection", (ws) => {
   let userName;
   let isClosed = false;
   const sessionStart = new Date().toISOString();
   userLogs.logInTime(sessionStart);
   open(`${__dirname}\\public\\index.html`);
+  setInterval(() =>{ 
+    if (newTime !== inactivityTime) {
+      const messageObject = {
+        internalTime: newTime,
+        imageStatus: "send",
+      };
+      ws.send(JSON.stringify(messageObject));
+      inactivityTime = newTime;
+    }
+  } , milliSeconds);
+  
   ws.on("message", (message) => {
     const data = JSON.parse(message);
     userName = data.name;
     if (checkUser(userName)) {
+    
       const messageObject = {
         internalTime: inactivityTime,
         imageStatus: "send",
