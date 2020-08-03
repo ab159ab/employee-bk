@@ -11,5 +11,4 @@ const dbConfig = knex({
     database: config.db.database,
   },
 });
-
 module.exports = dbConfig;
