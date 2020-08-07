@@ -6,7 +6,7 @@ const getTimedNames = require("./components/date");
 const check = require("./components/checkUser");
 const saveImg = require("./components/saveImage");
 const userLogs = require("./components/userLogs");
-
+const session = require("./dao/sessionDao");
 const config = require("../configs/config");
 
 const wssClient = new WebSocket({ port: config.browserClientPort });
