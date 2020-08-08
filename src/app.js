@@ -1,12 +1,8 @@
 const WebSocket = require("ws").Server;
 const open = require("open");
-const { json } = require("body-parser");
-const { Socket } = require("dgram");
-const getTimedNames = require("./components/date");
-const check = require("./components/checkUser");
-const saveImg = require("./components/saveImage");
+const checkUser = require("./components/checkUser");
+const saveImage = require("./components/saveImage");
 const userLogs = require("./components/userLogs");
-const session = require("./dao/sessionDao");
 const config = require("../configs/config");
 
 let sessionData = [];
@@ -17,6 +13,15 @@ session.getUserSession().then((da) => {
 });
 const wssClient = new WebSocket({ port: config.browserClientPort });
 wssClient.on("connection", (websocket) => {
+  websocket.on("message", (message) => {
+    const data = JSON.parse(message);
+    if (data.name === "InacivtiyTime") {
+      newTime = data.time;
+    }
+    if (data.name === "ScreenshotTime") {
+      screenShotInterval = (data.time) * milliSeconds;
+    }
+  });
   console.log("connection opened on port 9000");
 });
 
@@ -27,31 +32,40 @@ wssSession.on("connection", (websocket) => {
 });
 
 const wss = new WebSocket({ port: config.javaClientPort });
-open(`${__dirname}\\public\\index.html`);
 wss.on("connection", (ws) => {
   let userName;
   let isClosed = false;
-
   const sessionStart = new Date().toISOString();
   userLogs.logInTime(sessionStart);
-
+  open(`${__dirname}\\public\\index.html`);
+  setInterval(() =>{ 
+    if (newTime !== inactivityTime) {
+      const messageObject = {
+        internalTime: newTime,
+        imageStatus: "send",
+      };
+      ws.send(JSON.stringify(messageObject));
+      inactivityTime = newTime;
+    }
+  } , milliSeconds);
+  
   ws.on("message", (message) => {
     const data = JSON.parse(message);
-    console.log(data.name);
     userName = data.name;
-    const numbr = check.checkUser(data.name);
-    console.log(numbr);
-
-    if (numbr === 1) {
+    if (checkUser(userName)) {
+    
+      const messageObject = {
+        internalTime: inactivityTime,
+        imageStatus: "send",
+      };
       setTimeout(() => {
-        ws.send("Send Images");
-      }, 5000);
+        ws.send(JSON.stringify(messageObject));
+      }, screenShotInterval);
     } else {
       ws.send("404");
     }
-
     if (data.image !== "image") {
-      const fileName = saveImg.saveImage(data.image, data.name);
+      const fileName = saveImage(data.image, data.name);
       wssClient.clients.forEach((client) => {
         console.log(client);
         const obj = { file: fileName, image: data.image };
@@ -59,7 +73,6 @@ wss.on("connection", (ws) => {
       });
     }
   });
-
   ws.on("close", () => {
     const sessionEnd = new Date().toISOString();
     isClosed = true;
