@@ -4,6 +4,12 @@ const checkUser = require("./components/checkUser");
 const saveImage = require("./components/saveImage");
 const userLogs = require("./components/userLogs");
 const config = require("../configs/config");
+const session = require("./dao/sessionDao");
+
+const { milliSeconds } = config;
+let { inactivityTime } = config;
+let newTime = config.inactivityTime;
+let screenShotInterval = (config.screenShotIntervalSeconds) * milliSeconds;
 
 let sessionData = [];
 open(`${__dirname}\\public\\session.html`);
@@ -38,7 +44,7 @@ wss.on("connection", (ws) => {
   const sessionStart = new Date().toISOString();
   userLogs.logInTime(sessionStart);
   open(`${__dirname}\\public\\index.html`);
-  setInterval(() =>{ 
+  setInterval(() => {
     if (newTime !== inactivityTime) {
       const messageObject = {
         internalTime: newTime,
@@ -47,13 +53,12 @@ wss.on("connection", (ws) => {
       ws.send(JSON.stringify(messageObject));
       inactivityTime = newTime;
     }
-  } , milliSeconds);
-  
+  }, milliSeconds);
+
   ws.on("message", (message) => {
     const data = JSON.parse(message);
     userName = data.name;
     if (checkUser(userName)) {
-    
       const messageObject = {
         internalTime: inactivityTime,
         imageStatus: "send",
