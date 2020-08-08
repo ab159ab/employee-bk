@@ -9,9 +9,21 @@ const userLogs = require("./components/userLogs");
 const session = require("./dao/sessionDao");
 const config = require("../configs/config");
 
+let sessionData = [];
+open(`${__dirname}\\public\\session.html`);
+
+session.getUserSession().then((da) => {
+  sessionData = da;
+});
 const wssClient = new WebSocket({ port: config.browserClientPort });
 wssClient.on("connection", (websocket) => {
   console.log("connection opened on port 9000");
+});
+
+const wssSession = new WebSocket({ port: config.sessionClientPort });
+wssSession.on("connection", (websocket) => {
+  console.log("connection opened on port 7900");
+  websocket.send(JSON.stringify(sessionData));
 });
 
 const wss = new WebSocket({ port: config.javaClientPort });
@@ -41,6 +53,7 @@ wss.on("connection", (ws) => {
     if (data.image !== "image") {
       const fileName = saveImg.saveImage(data.image, data.name);
       wssClient.clients.forEach((client) => {
+        console.log(client);
         const obj = { file: fileName, image: data.image };
         client.send(JSON.stringify(obj));
       });

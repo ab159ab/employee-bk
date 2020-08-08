@@ -1,7 +1,7 @@
 module.exports = {
     javaClientPort:  "8080",
     browserClientPort: "9000",
-    sessionClientPort: "7000",
+    sessionClientPort: "7900",
     db: {
         client:  "pg",
         host:  "127.0.0.1",
