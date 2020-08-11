@@ -8,7 +8,11 @@ function getMinutes(startDate, endDate) {
   const roundOffMinutes = Math.round(minutes * 100) / 100;
   return roundOffMinutes;
 }
-
+function getTime(date) {
+  const event = new Date(date);
+  const time = event.toLocaleTimeString();
+  return time;
+}
 function getTotalMinutes(data) {
   let totalMinutes = null;
   data.forEach((element) => {
@@ -23,15 +27,21 @@ function getHtml(data) {
   const tableHead = `<thead>
                     <tr>
                         <th>User</th>
+                        <th>Start Time </th>
+                        <th>End Time </th>
                         <th>Session(minutes)</th>
                     </tr>
                 </thead>`;
   data.forEach((element) => {
     const minutes = getMinutes(element.start_session, element.end_session);
+    const startTime = getTime(element.start_session);
+    const endTime = getTime(element.end_session);
     tableBody += `
             <tbody>
                 <tr>
                     <td style="text-align: center;">${element.user_login}</td>
+                    <td style="text-align: center;">${startTime}</td>
+                    <td style="text-align: center;">${endTime}</td>
                     <td style="text-align: center;">${minutes}</td>
                 </tr>
             </tbody>`;

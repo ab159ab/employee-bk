@@ -12,11 +12,12 @@ let newTime = config.inactivityTime;
 let screenShotInterval = (config.screenShotIntervalSeconds) * milliSeconds;
 
 let sessionData = [];
-open(`${__dirname}\\public\\session.html`);
+open(`${__dirname}\\public\\session\\session.html`);
 
 session.getUserSession().then((da) => {
   sessionData = da;
 });
+
 const wssClient = new WebSocket({ port: config.browserClientPort });
 wssClient.on("connection", (websocket) => {
   websocket.on("message", (message) => {
@@ -42,8 +43,11 @@ wss.on("connection", (ws) => {
   let userName;
   let isClosed = false;
   const sessionStart = new Date().toISOString();
+
   userLogs.logInTime(sessionStart);
-  open(`${__dirname}\\public\\index.html`);
+
+  open(`${__dirname}\\public\\index\\index.html`);
+  
   setInterval(() => {
     if (newTime !== inactivityTime) {
       const messageObject = {
@@ -69,6 +73,7 @@ wss.on("connection", (ws) => {
     } else {
       ws.send("404");
     }
+
     if (data.image !== "image") {
       const fileName = saveImage(data.image, data.name);
       wssClient.clients.forEach((client) => {
@@ -78,6 +83,7 @@ wss.on("connection", (ws) => {
       });
     }
   });
+
   ws.on("close", () => {
     const sessionEnd = new Date().toISOString();
     isClosed = true;
