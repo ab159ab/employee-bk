@@ -1,6 +1,7 @@
 module.exports = {
-    javaClientPort:  8080,
-    browserClientPort: 9000,
+    javaClientPort:  "8080",
+    browserClientPort: "9000",
+    sessionClientPort: "7900",
     screenShotIntervalSeconds: 5,
     inactivityTime: 15,
     milliSeconds: 1000,

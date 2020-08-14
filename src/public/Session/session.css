@@ -1,0 +1,13 @@
+.totalSession{
+    float: right;
+    margin-right: 15%;
+}
+table{
+    width:100%
+}
+.user-session-div{
+    display: none;
+}
+h3{
+    text-align: center;
+}
