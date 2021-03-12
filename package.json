@@ -6,7 +6,6 @@
   "scripts": {
     "test:unit": "jest --watchAll --testPathPattern=src/tests/unit",
     "test:integration": "ENV=testing jest --watchAll --testPathPattern=src/tests/integration/",
-    "test-win:integration": "rmdir dist /s /q && tsc && cd dist && set ENV=testing && jest --watchAll --testPathPattern=src/tests/integration/",
     "lintAutoFix": "./node_modules/.bin/eslint src --fix; ",
     "lint": "eslint \"src/**/*.{js,ts}\" --quiet --fix",
     "build": "rm -rf dist && tsc",
@@ -15,22 +14,12 @@
     "compileForProd": "./node_modules/@babel/cli/bin/babel.js src --out-dir  dist --presets minify ",
     "package": "npm run lint; npm run babel",
     "start": "npm run lint; npm run build; ENV=development node dist/src/app.js",
-    "startForWindows": "npm run lint && npm run build && set ENV=development node dist/src/app.js",
-    "startInWindows": "npm run lint && node src/app.js",
     "startDev": "npm run lint && nodemon src/app.js",
-    "startWithoutLint": "npm run babelWithSourceMap  && node -r source-map-support dist/app.js",
-    "babelWithSourceMapForWindows": "node ./node_modules/@babel/cli/bin/babel.js src --out-dir  dist --source-maps inline ",
     "dbMigrateLatest": "ENV=development knex migrate:latest",
     "dbRollback": "ENV=development knex migrate:rollback",
     "dbSeed": "ENV=development knex seed:run",
     "dbReset": "npm run dbRollback; npm run dbMigrateLatest",
     "dbResetRun": "npm run dbReset; npm run dbSeed; npm start",
-    "win-tsc": "rmdir dist /s /q && tsc",
-    "win-run": "npm run win-tsc && set ENV=development && node dist/src/app.js",
-    "win-db-seed": "cd dist/src && set ENV=development && knex seed:run",
-    "win-db-rollback": "cd dist/src && set ENV=development && knex migrate:rollback",
-    "win-db-latest": "cd dist/src && set ENV=development && knex migrate:latest",
-    "win-db-fresh-run": "npm run win-tsc && npm run win-db-rollback && npm run win-db-latest && npm run win-db-seed && npm run win-run"
   },
   "jest": {
     "globalSetup": "<rootDir>/dist/src/tests/global-test-setup.js"

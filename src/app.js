@@ -47,7 +47,7 @@ wss.on("connection", (ws) => {
   userLogs.logInTime(sessionStart);
 
   open(`${__dirname}\\public\\index\\index.html`);
-  
+
   setInterval(() => {
     if (newTime !== inactivityTime) {
       const messageObject = {
